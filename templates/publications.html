@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        header {
+            background: #1f1f1f;
+            color: #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        .filter-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .filter-form label {
+            color: #e0e0e0;
+            margin-right: 10px;
+        }
+        .filter-form select, .filter-form input[type="submit"] {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+        .filter-form input[type="submit"] {
+            background-color: #90caf9;
+            color: #121212;
+            cursor: pointer;
+        }
+        .filter-form input[type="submit"]:hover {
+            background-color: #82b1ff;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .card {
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+        .card-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #90caf9;
+        }
+        .card-content {
+            margin-top: 10px;
+            color: #e0e0e0;
+        }
+        .card-content a {
+            color: #90caf9;
+            text-decoration: none;
+        }
+        .card-content a:hover {
+            text-decoration: underline;
+        }
+        .no-publications {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2rem;
+            color: #90caf9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Publications</h1>
+    </header>
+    <div class="container">
+        <div class="filter-form">
+            <form action="/publications" method="get">
+                <label for="year">Filter by Year:</label>
+                <select id="year" name="year">
+                    <option value="">All Years</option>
+                    {% for year in years %}
+                        <option value="{{ year }}" {% if year == request.args.get('year') %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Filter">
+            </form>
+        </div>
+        <div class="card-container">
+            {% if publications %}
+                {% for publication in publications %}
+                    <a href="{{ url_for('publication_details', identifier=publication['identifier']['value']) }}" class="card">
+                        <div class="card-header">
+                            {{ publication['headline']['value'] }}
+                        </div>
+                        <div class="card-content">
+                            <p><strong>Date Published:</strong> {{ publication['datePublished']['value'] }}</p>
+                            <p><strong>Identifier:</strong> {{ publication['identifier']['value'] }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p class="no-publications">No publications found.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publication Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        header {
+            background: #1f1f1f;
+            color: #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .card {
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            color: #90caf9;
+        }
+        .details-item {
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+        .details-item strong {
+            display: inline-block;
+            width: 200px;
+            color: #90caf9;
+        }
+        .no-details {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2rem;
+            color: #90caf9;
+        }
+        a {
+            color: #bb86fc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Publication Details</h1>
+    </header>
+    <div class="container">
+        {% if publication %}
+            <div class="card">
+                <h2>{{ publication['headline']['value'] }}</h2>
+                <div class="details-item"><strong>URL:</strong> <a href="{{ publication.get('url', {}).get('value', '#') }}" target="_blank">{{ publication.get('url', {}).get('value', 'N/A') }}</a></div>
+                <div class="details-item"><strong>Date Published:</strong> {{ publication.get('datePublished', {}).get('value', 'N/A') }}</div>
+                <div class="details-item"><strong>DOI:</strong> {{ publication.get('doi', {}).get('value', 'N/A') }}</div>
+                <div class="details-item"><strong>Abstract:</strong> {{ publication.get('abstract', {}).get('value', 'N/A') }}</div>
+                <div class="details-item"><strong>Citation:</strong> {{ publication.get('citation', {}).get('value', 'N/A') }}</div>
+                <div class="details-item"><strong>Volume:</strong> {{ publication.get('volume', {}).get('value', 'N/A') }}</div>
+                <div class="details-item"><strong>Identifier:</strong> {{ publication['identifier']['value'] }}</div>
+                <div class="details-item"><strong>Number of Pages:</strong> {{ publication.get('numberOfPages', {}).get('value', 'N/A') }}</div>
+                <div class="details-item"><strong>Page Start:</strong> {{ publication.get('pageStart', {}).get('value', 'N/A') }}</div>
+                <div class="details-item"><strong>Page End:</strong> {{ publication.get('pageEnd', {}).get('value', 'N/A') }}</div>
+                
+                <!-- Display authors -->
+                <div class="details-item">
+                    <strong>Authors:</strong>
+                    <ul>
+                        {% for author in authors %}
+                            <li><a href="{{ url_for('author_publications', author_identifier=author.id) }}">{{ author.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Display subject areas -->
+                <div class="details-item">
+                    <strong>Subject Areas:</strong>
+                    <ul>
+                        {% for area in areas %}
+                        <li><a href="{{ url_for('subject_area_publications', subject_area_id=area.name | replace(' ', '_')) }}">{{ area.name }}</a></li>
+                        <li><a href="{{ url_for('subject_area_publications', subject_area_id=area.name) }}">{{ area.name }}</a></li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+            </div>
+        {% else %}
+            <p class="no-details">No details available for this publication.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

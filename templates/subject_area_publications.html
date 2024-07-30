@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications by Subject Area</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        header {
+            background: #1f1f1f;
+            color: #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .card {
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            color: #90caf9;
+        }
+        .details-item {
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+        .details-item strong {
+            display: inline-block;
+            width: 200px;
+            color: #90caf9;
+        }
+        .no-details {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2rem;
+            color: #90caf9;
+        }
+        a {
+            color: #bb86fc;
+            text-decoration: none;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Publications by Subject Area</h1>
+    </header>
+    <div class="container">
+        {% if publications %}
+            <div class="card">
+                <h2>Publications in {{ subject_area_name }}</h2>
+                <ul>
+                    {% for publication in publications %}
+                        <li>
+                            <a href="{{ url_for('publication_details', identifier=publication.identifier.value) }}">{{ publication.headline.value }}</a>
+                            {% if publication.doi %}
+                                <br><strong>DOI:</strong> {{ publication.doi.value }}
+                            {% endif %}
+                            {% if publication.datePublished %}
+                                <br><strong>Date Published:</strong> {{ publication.datePublished.value }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <p class="no-details">No publications available for this subject area.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

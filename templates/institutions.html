@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Instituciones</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>URL</th>
+            <th>Número de Documentos</th>
+            <th>Ciudad</th>
+            <th>País</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for institution in institutions %}
+        <tr>
+            <td>{{ institution.name.value }}</td>
+            <td><a href="{{ institution.url.value }}">{{ institution.url.value }}</a></td>
+            <td>{{ institution.numberOfDocuments.value }}</td>
+            <td>{{ institution.city.value }}</td>
+            <td>{{ institution.country.value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
